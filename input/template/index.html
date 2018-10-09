@@ -1,0 +1,217 @@
+{HEADER}
+
+<body>
+    {NAVIGATION}
+    <div class="container-fluid">
+        {LEFT_COLUMN}
+        <!-- Center Column -->
+        {CONTENT}
+    </div><!--/container-fluid-->
+    {FOOTER}    
+    
+    <!-- IE10 viewport bug workaround -->
+    <script src="js/ie10-viewport-bug-workaround.js"></script>
+    
+    <!-- Placeholder Images -->
+    <script src="js/holder.min.js"></script>
+
+
+       <script>
+        var pathname = window.location.pathname;
+        var selectors = $("#navbar > ul > li > a")
+        $.each(selectors, function(i,val){
+          if($(val).attr('href') == pathname) {
+            $(val).parent().addClass('active')
+          }
+        });
+    
+        var stats_datasets = null;
+        $.getJSON("/assets/statistics_datasets.json", function(json) {
+            console.log(json['multilabel']['dataset_size'])
+            stats_datasets = json;
+            $('#ds_ml_size').text(json['multilabel']['dataset_size']);
+        });
+
+
+        $.getJSON("/assets/variables.json", function(json) {
+        
+            var obj = json;
+
+            function responseHanlder(res) {
+                var data = [];
+
+                for (var key in res) {
+                    data.push({
+                        key: key,
+                        value: res[key],
+                        desc: 'TBD'
+                    });
+                }
+                return data;
+            }
+
+            $(function () {
+                $('#table_variables').bootstrapTable({
+                    data: responseHanlder(obj)
+                });
+            });
+        });
+
+        $.getJSON("/assets/outcomes_variables.json", function(json) {
+        
+            var obj = json;
+
+            function responseHanlder(res) {
+                var data = [];
+
+                for (var key in res) {
+                    data.push({
+                        key: key,
+                        value: res[key],
+                        desc: 'TBD'
+                    });
+                }
+                return data;
+            }
+
+            $(function () {
+                $('#table_outcomes_variables').bootstrapTable({
+                    data: responseHanlder(obj)
+                });
+            });
+        });
+
+        var trad_key = {
+              "dataset_size":"Dataset Size",
+              "min_feature": "Minimal number of features",
+              "avg_feature": "Average number of features", 
+              "max_feature": "Maximum number of features", 
+              "prevalence": "Prevalence"
+            }
+
+        var list_articles = ['1', '2', '3', '5', '6', '8', '10', '11', '13', '34', 'p1']
+        for (i = 0; i < list_articles.length; i++) {
+            var art = list_articles[i]
+            $.getJSON("/assets/datasets_documents/article_" + art + "/statistics_datasets.json", function(json) {
+                var obj = json;
+                var art_name = Object.keys(obj)[0];
+                var art_id = art_name.split("_")[1];
+
+                function responseHanlder(res) {
+                    var data = [];
+
+                    for (var key in res[art_name]) {
+                        var value = res[art_name][key];
+                        if(key === 'prevalence') {
+                            value = parseFloat(res[art_name][key][art_id]['class_normalized']).toFixed(2);
+                        }
+                        if(key === 'avg_feature') {
+                            value = parseFloat(value).toFixed(2);
+                        }
+                        data.push({
+                            key: trad_key[key],
+                            value: value,
+                        });
+                    }
+                    return data;
+                }
+
+                $(function () {
+                    $('#table_stat_' + art_name).bootstrapTable({
+                        data: responseHanlder(obj)
+                    });
+                });
+            });
+        }
+
+    $.getJSON("/assets/datasets_documents/multiclass/statistics_datasets.json", function(json) {
+        var obj = json;
+        var art_name = Object.keys(obj)[0];
+
+        function responseHanlder(res) {
+            var data = [];
+
+            for (var key in res[art_name]) {
+                var value = res[art_name][key];
+                if(key === 'prevalence') {
+                    continue;
+                }
+                if(key === 'avg_feature') {
+                    value = parseFloat(value).toFixed(2);
+                }
+                data.push({
+                    key: trad_key[key],
+                    value: value,
+                });
+            }
+            return data;
+        }
+
+        $(function () {
+            $('#table_stat_' + art_name).bootstrapTable({
+                data: responseHanlder(obj)
+            });
+        });
+    });
+
+    $.getJSON("/assets/datasets_documents/multilabel/statistics_datasets.json", function(json) {
+        var obj = json;
+        var art_name = Object.keys(obj)[0];
+
+        function responseHanlder(res) {
+            var data = [];
+
+            for (var key in res[art_name]) {
+                var value = res[art_name][key];
+                if(key === 'prevalence') {
+                    continue;
+                }
+                if(key === 'avg_feature') {
+                    value = parseFloat(value).toFixed(2);
+                }
+                data.push({
+                    key: trad_key[key],
+                    value: value,
+                });
+            }
+            return data;
+        }
+
+        $(function () {
+            $('#table_stat_' + art_name).bootstrapTable({
+                data: responseHanlder(obj)
+            });
+        });
+    });
+
+
+    if (!library)
+       var library = {};
+
+    library.json = {
+       replacer: function(match, pIndent, pKey, pVal, pEnd) {
+          var key = '<span class=json-key>';
+          var val = '<span class=json-value>';
+          var str = '<span class=json-string>';
+          var r = pIndent || '';
+          if (pKey)
+             r = r + key + pKey.replace(/[": ]/g, '') + '</span>: ';
+          if (pVal)
+             r = r + (pVal[0] == '"' ? str : val) + pVal + '</span>';
+          return r + (pEnd || '');
+          },
+       prettyPrint: function(obj) {
+          var jsonLine = /^( *)("[\w]+": )?("[^"]*"|[\w.+-]*)?([,[{])?$/mg;
+          return JSON.stringify(obj, null, 3)
+             .replace(/&/g, '&amp;').replace(/\\"/g, '&quot;')
+             .replace(/</g, '&lt;').replace(/>/g, '&gt;')
+             .replace(jsonLine, library.json.replacer);
+          }
+       };
+
+
+
+    </script>    
+</body>
+
+</html>

@@ -1,0 +1,53 @@
+ 
+        <!-- Center Column -->
+        <div class="col-sm-10">
+            
+            <div class="row">
+                <article class="col-xs-12">
+                    <h1>About ECHR-OD</h1>
+                    <!--<h2>History</h2>-->
+                    <h2 id="creation_process">Creation Process</h2>
+                    <p>The database and datasets are based on the raw documents and information available publicly in the <a href="https://hudoc.echr.coe.int" title="HUDOC Database">HUDOC</a> database. The process is broken down into several steps as illustrated by the following workflow:
+                        <ul>
+                          <li><strong>get_cases_info.py</strong>: Retrieve the list and basic information about cases from HUDOC</li>
+                          <li><strong>filter_cases.py</strong>: Remove unwanted, inconsistant, ambiguous or difficult-to-process cases</li>
+                          <li><strong>preprocess_documents.py</strong>: Analyse the raw judgments to construct a JSON nested structures representing the paragraphs</li>
+                          <li><strong>process_documents.py</strong>: Normalize the documents and generate a Bag-of-Words and TFID representation</li>
+                          <li><strong>generate_datasets.py</strong>: Combine all the information to generate several datasets</li>
+                        </ul>
+                    </p>
+                    <img src="/assets/img/echr-graph.png" />
+                    <h2>Licensing</h2>
+                    <p>The <strong>database</strong> and <strong>datasets</strong> are available under <strong>Open Database License (ODbL)</strong>. See the <a href="https://opendatacommons.org/licenses/odbl/1.0/" title="ODbL license">full text</a> or a <a href="https://opendatacommons.org/licenses/odbl/summary/" title="ODbL license summary">summary</a> reproduce below.</p>
+
+                    <p>You are free:
+                      <li><strong>To Share</strong>: To copy, distribute and use the database.</li>
+                      <li><strong>To Create</strong>: To produce works from the database.</li>
+                      <li><strong>To Adapt</strong>: To modify, transform and build upon the database.</li>
+                    </p>
+                    <p>
+                      As long as you:
+                      <li><strong>Attribute</strong>: You must attribute any public use of the database, or works produced from the database, in the manner specified in the ODbL. For any use or redistribution of the database, or works produced from it, you must make clear to others the license of the database and keep intact any notices on the original database.</li>
+                      <li><strong>Share-Alike</strong>: If you publicly use any adapted version of this database, or works produced from an adapted database, you must also offer that adapted database under the ODbL.</li>
+                      Keep open: If you redistribute the database, or an adapted version of it, then you may use technological measures that restrict the work (such as DRM) as long as you also redistribute a version without such measures.</li>
+                    </p>
+                    <h2 id="academic_citing">Academic Citing</h2>
+                    <p>When citing this database or a dataset, please use this BibTex entry:</p>
+                    <pre>
+@inproceedings{echr-od,
+      title = {{Title to be done}},
+      author = {Alexandre Quemy},
+      booktitle = {{Proceeding of...}},
+      pages = {XX--YY},
+      year = 2018,
+      month = May,
+      day = 22,
+      publisher = {XXX},
+      address = {XXX},
+      note={\url{http://}},
+      language={English}
+}                    </pre>   
+                </article>
+            </div>
+            <hr>
+        </div><!--/Center Column-->
